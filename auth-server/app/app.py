@@ -9,6 +9,7 @@ from authlib.oauth2.rfc6749 import wrappers
 from models import oauth2_token
 
 import logging
+import os
 import requests
 
 flask_app = flask.Flask(__name__)
@@ -31,8 +32,8 @@ _oauth = flask_client.OAuth(flask_app, fetch_token=_fetch_token)
 # TODO (deojonathan@): Transfer this to a separate configuration file.
 _oauth.register(
   name='spotify',
-  client_id='',
-  client_secret='',
+  client_id=os.environ.get('SPOTIFY_CLIENT_ID', ''),
+  client_secret=os.environ.get('SPOTIFY_CLIENT_SECRET', ''),
   authorize_url='https://accounts.spotify.com/authorize',
   access_token_url='https://accounts.spotify.com/api/token',
   api_base_url=_SPOTIFY_API_ENDPOINT,
