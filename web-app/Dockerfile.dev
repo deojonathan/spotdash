@@ -1,0 +1,11 @@
+FROM node:slim AS build-stage
+WORKDIR /usr/src/app
+
+COPY app/tsconfig*.json ./
+COPY app/package*.json ./
+COPY app/angular.json ./
+RUN npm install
+
+COPY app/src/ ./src/
+
+EXPOSE 80
