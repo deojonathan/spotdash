@@ -1,0 +1,42 @@
+# This contains overrides on top of docker-compose for "dev" enviroment.
+# To load this file upon call to `up`, simply specify using "-f" argument:
+#   e.g. `docker-compose up -f docker-compose.yml -f docker-commpose.dev.yml`
+version: "3.8"
+
+services:
+  proxy:
+    build: ./proxy
+    depends_on:
+      - auth
+      - web-app
+    ports:
+      - "80:80"
+    networks:
+      - spotdash-net
+
+  auth:
+    build: ./auth-server
+    command: gunicorn --bind 0.0.0.0:80 -w 4 --reload app:app
+    volumes:
+      - ./auth-server/app:/usr/src/app
+    ports:
+      - "8081:80"
+    networks:
+      - spotdash-net
+
+  web-app:
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./web-app/app/src:/usr/src/app/src:ro
+    ports:
+      - "8080:80"
+    command: npm run start -- --host --poll 500 --port 80
+    networks:
+      - spotdash-net
+
+networks:
+  spotdash-net:
+    name: spotdash-net
+    driver: bridge
