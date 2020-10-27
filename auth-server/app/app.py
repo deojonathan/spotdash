@@ -27,10 +27,12 @@ def _fetch_token(name):
   return wrappers.OAuth2Token.from_dict(current_token)
 
 _oauth = flask_client.OAuth(flask_app, fetch_token=_fetch_token)
+
+# TODO (deojonathan@): Transfer this to a separate configuration file.
 _oauth.register(
   name='spotify',
-  client_id='fda9cc435040415982a464e782e6ff2e',
-  client_secret='1022b2058a244674ab8ece9cd8a8819e',
+  client_id='',
+  client_secret='',
   authorize_url='https://accounts.spotify.com/authorize',
   access_token_url='https://accounts.spotify.com/api/token',
   api_base_url=_SPOTIFY_API_ENDPOINT,
