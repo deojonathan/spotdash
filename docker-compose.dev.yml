@@ -16,13 +16,16 @@ services:
 
   auth:
     build: ./auth-server
-    command: gunicorn --bind 0.0.0.0:80 -w 4 --reload app:app
+    command: gunicorn --bind 0.0.0.0:80 -w 4 --reload app:flask_app
     volumes:
       - ./auth-server/app:/usr/src/app
     ports:
       - "8081:80"
     networks:
       - spotdash-net
+    environment:
+      - SPOTIFY_CLIENT_ID
+      - SPOTIFY_CLIENT_SECRET
 
   web-app:
     build:
@@ -32,7 +35,7 @@ services:
       - ./web-app/app/src:/usr/src/app/src:ro
     ports:
       - "8080:80"
-    command: npm run start -- --host --poll 500 --port 80
+    command: npm run start -- --host --poll 500 --port 80 --disableHostCheck
     networks:
       - spotdash-net
 

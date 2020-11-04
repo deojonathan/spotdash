@@ -4,6 +4,7 @@
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
+@import 'lib/core/theming/palette';
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -13,15 +14,16 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$app-primary: mat-palette($mat-indigo);
-$app-accent: mat-palette($mat-pink, A200, A100, A400);
+// https://developer.spotify.com/branding-guidelines/
+$app-primary: mat-palette($mat-spotify);
+$app-accent: mat-palette($mat-grey, 50);
 
 // The warn palette is optional (defaults to red).
 $app-warn: mat-palette($mat-red);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$app-theme: mat-light-theme((
+$app-theme: mat-dark-theme((
   color: (
     primary: $app-primary,
     accent: $app-accent,
@@ -38,3 +40,15 @@ $app-theme: mat-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Set default background and foreground based on app theme.
+//
+// Based on mat-dark/light-theme-foreground.
+$foreground: map-get($map: $app-theme, $key: foreground);
+// Based on mat-dark/lioght-theme-background.
+$background: map-get($map: $app-theme, $key: background);
+
+body, div, h1 {
+  color: mat-color($foreground, text);
+  background-color: mat-color($background, background);
+}
